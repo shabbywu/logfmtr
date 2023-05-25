@@ -1,4 +1,4 @@
-module github.com/iand/logfmtr
+module github.com/shabbywu/logfmtr
 
 go 1.15
 
