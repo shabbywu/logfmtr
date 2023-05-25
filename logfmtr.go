@@ -230,8 +230,11 @@ func (c *core) write(level int, humanprefix, msg string, values string, extras .
 				humanprefix = colorGreen + humanprefix + " " + colorDefault
 			}
 		}
-
-		b.WriteString(fmt.Sprintf("%d %-5s | %15s | %-30s", level, humanprefix, time.Now().UTC().Format("15:04:05.000000"), msg))
+		if c.tsFormat != "" {
+			b.WriteString(fmt.Sprintf("%d %-5s | %s | %-30s", level, humanprefix, time.Now().Format(c.tsFormat), msg))
+		} else {
+			b.WriteString(fmt.Sprintf("%d %-5s | %15s | %-30s", level, humanprefix, time.Now().Format("15:04:05.000000"), msg))
+		}
 		if c.name != "" {
 			b.WriteRune(' ')
 			b.WriteString(c.key("logger"))
@@ -255,7 +258,7 @@ func (c *core) write(level int, humanprefix, msg string, values string, extras .
 		if c.tsFormat != "" {
 			b.WriteRune(' ')
 			b.WriteString("ts=")
-			b.WriteString(quote(time.Now().UTC().Format(c.tsFormat)))
+			b.WriteString(quote(time.Now().Format(c.tsFormat)))
 		}
 		b.WriteRune(' ')
 		b.WriteString("msg=")
